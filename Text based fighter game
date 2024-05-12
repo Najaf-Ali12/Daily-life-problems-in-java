@@ -1,0 +1,57 @@
+import java.util.Random;
+
+public class Fighter {
+
+  private String name;
+  private int health;
+  private int attackPower;
+
+  public Fighter(String name, int health, int attackPower) {
+    this.name = name;
+    this.health = health;
+    this.attackPower = attackPower;
+  }
+
+  public void attack(Fighter opponent) {
+    opponent.health -= attackPower;
+    System.out.println(String.format("%s attacks %s for %d damage!", name, opponent.name, attackPower));
+  }
+
+  public boolean isAlive() {
+    return health > 0;
+  }
+
+  public static void main(String[] args) {
+    Random random = new Random();
+
+    // Create two fighters
+    Fighter fighter1 = new Fighter("Bruiser", 100, 15);
+    Fighter fighter2 = new Fighter("Swift", 80, 20);
+
+    // Fight loop
+    int roundNumber = 1;
+    while (fighter1.isAlive() && fighter2.isAlive()) {
+      System.out.println("\n** Round " + roundNumber + " **");
+
+      // Attack order determined randomly
+      Fighter attacker = fighter1;
+      Fighter defender = fighter2;
+      if (random.nextInt(2) == 1) {
+        attacker = fighter2;
+        defender = fighter1;
+      }
+
+      attacker.attack(defender);
+
+      // Print remaining health
+      System.out.println(fighter1.name + ": " + fighter1.health + " HP");
+      System.out.println(fighter2.name + ": " + fighter2.health + " HP");
+
+      roundNumber++;
+    }
+
+    // Declare winner
+    Fighter winner = fighter1.isAlive() ? fighter1 : fighter2;
+    System.out.println("\n** Winner: " + winner.name + "! **");
+  }
+}
